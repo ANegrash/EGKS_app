@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EGKS">
         <activity
+            android:name=".AddCard"
+            android:exported="false" />
+        <activity
+            android:name=".CardInfo"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
