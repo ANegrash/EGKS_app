@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ListView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import nav.com.ru.egks.models.CardsModel
 
 const val PREFS_NAME = "nav-com.egks"
 const val KEY_TYPE = "prefs.cards"
@@ -22,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         val addCard = findViewById<FloatingActionButton>(R.id.addCard)
 
         val listOfFlights = mutableListOf<CardsModel>()
+        listOfFlights.add(CardsModel("000177334", "Детская карта"))
+        listOfFlights.add(CardsModel("000123321", "Красивая карта"))
 
         val cardsString = getSavedCards()
         val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
