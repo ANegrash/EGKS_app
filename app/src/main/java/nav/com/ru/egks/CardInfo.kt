@@ -1,10 +1,13 @@
 package nav.com.ru.egks
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
@@ -15,6 +18,9 @@ import okhttp3.Response
 import java.io.IOException
 
 class CardInfo : AppCompatActivity() {
+
+    private val sharedPrefs by lazy {  getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_info)
@@ -29,10 +35,31 @@ class CardInfo : AppCompatActivity() {
         val toolbarText = findViewById<TextView>(R.id.custom_title)
         val cardImg = findViewById<ImageView>(R.id.cardImage)
         val backBtn = findViewById<ImageView>(R.id.backButton)
+        val delBtn = findViewById<ImageView>(R.id.deleteCard)
         toolbarText.text = cardName
 
         backBtn.setOnClickListener {
             finish()
+        }
+
+        delBtn.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Удаление карты")
+            builder.setMessage("Вы уверены, что хотите удалить карту \"$cardName\"?")
+
+            builder.setPositiveButton("Да") { _, _ ->
+                val cardsString = getSavedCards()
+                val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
+                val array2 = arrayListOf<String>()
+                cardsArray?.filterTo(array2, { it != "$cardNum;$cardName" })
+                saveCards(array2.joinToString(separator = "--divider--"))
+                Toast.makeText(this, "Карта удалена", Toast.LENGTH_LONG).show()
+                finish()
+            }
+
+            builder.setNegativeButton("Нет") {_, _ ->}
+
+            builder.show()
         }
 
         url += cardNum
@@ -102,4 +129,8 @@ class CardInfo : AppCompatActivity() {
             1 -> errorLayout.visibility = View.VISIBLE
         }
     }
+
+    private fun getSavedCards() = sharedPrefs.getString(KEY_TYPE, "")
+
+    private fun saveCards (cards: String) = sharedPrefs.edit().putString(KEY_TYPE, cards).apply()
 }

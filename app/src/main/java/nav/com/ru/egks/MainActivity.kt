@@ -37,27 +37,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadList() {
         val listView = findViewById<ListView>(R.id.listView)
-        val listOfFlights = mutableListOf<CardsModel>()
-        listOfFlights.clear()
-        listOfFlights.add(CardsModel("000177334", "Детская карта"))
-        listOfFlights.add(CardsModel("000123321", "Красивая карта"))
+        val listOfCards = mutableListOf<CardsModel>()
+        listOfCards.clear()
 
         val cardsString = getSavedCards()
         val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
         if (cardsArray != null) {
             for (cardData in cardsArray) {
                 if (cardData.indexOf(";") > -1)
-                    listOfFlights.add(CardsModel(cardData.split(";")[0], cardData.split(";")[1]))
+                    listOfCards.add(CardsModel(cardData.split(";")[0], cardData.split(";")[1]))
             }
         }
 
-        val stateAdapter = CardsListAdapter(this@MainActivity, R.layout.item_card, listOfFlights)
+        val stateAdapter = CardsListAdapter(this@MainActivity, R.layout.item_card, listOfCards)
         listView.adapter = stateAdapter
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val intent = Intent(this@MainActivity, CardInfo::class.java)
-            intent.putExtra("name", listOfFlights[position].name)
-            intent.putExtra("number", listOfFlights[position].number)
+            intent.putExtra("name", listOfCards[position].name)
+            intent.putExtra("number", listOfCards[position].number)
             startActivity(intent)
         }
     }
