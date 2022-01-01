@@ -57,8 +57,9 @@ class CardInfo : AppCompatActivity() {
                         val cardInfo: CardInfoModel = gson.fromJson(stringResponse, CardInfoModel::class.java)
                         runOnUiThread {
                             supportActionBar?.hide()
-                            balTw.text = cardInfo.rub.toString() + "р. " + cardInfo.cent.toString() + "к."
-                            expTw.text = cardInfo.exp
+
+                            balTw.text = if ((cardInfo.rub === null) or (cardInfo.cent === null)) "нет данных" else cardInfo.rub.toString() + "р. " + cardInfo.cent.toString() + "к."
+                            expTw.text = if (cardInfo.exp === null) "нет данных" else if (cardInfo.exp.isEmpty()) "нет данных" else cardInfo.exp
 
                             Picasso.with(this@CardInfo)
                                 .load(cardInfo.img)

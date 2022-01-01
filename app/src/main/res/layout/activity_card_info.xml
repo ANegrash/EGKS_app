@@ -15,12 +15,11 @@
             android:id="@+id/imageView"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:background="@drawable/circle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/stat_notify_error" />
+            app:srcCompat="?android:attr/alertDialogIcon" />
 
         <TextView
             android:id="@+id/errorText"
@@ -137,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:fontFamily="@font/roboto_mono"
-            android:text="Действительно до:"
+            android:text="Действует до:"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"

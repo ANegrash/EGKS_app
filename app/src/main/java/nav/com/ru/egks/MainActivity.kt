@@ -19,10 +19,26 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val listView = findViewById<ListView>(R.id.listView)
         val addCard = findViewById<FloatingActionButton>(R.id.addCard)
 
+        addCard.setOnClickListener {
+            val intent = Intent(this@MainActivity, AddCard::class.java)
+            startActivity(intent)
+        }
+
+        loadList()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        loadList()
+    }
+
+    private fun loadList() {
+        val listView = findViewById<ListView>(R.id.listView)
         val listOfFlights = mutableListOf<CardsModel>()
+        listOfFlights.clear()
         listOfFlights.add(CardsModel("000177334", "Детская карта"))
         listOfFlights.add(CardsModel("000123321", "Красивая карта"))
 
@@ -44,14 +60,8 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("number", listOfFlights[position].number)
             startActivity(intent)
         }
-
-        addCard.setOnClickListener {
-            val intent = Intent(this@MainActivity, AddCard::class.java)
-            startActivity(intent)
-        }
     }
 
     private fun getSavedCards() = sharedPrefs.getString(KEY_TYPE, "")
 
-    private fun saveCards (cards: String) = sharedPrefs.edit().putString(KEY_TYPE, cards).apply()
 }
