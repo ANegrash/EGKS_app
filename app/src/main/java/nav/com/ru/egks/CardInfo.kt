@@ -1,8 +1,10 @@
 package nav.com.ru.egks
 
 import android.content.Context
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -26,10 +28,11 @@ class CardInfo : AppCompatActivity() {
         setContentView(R.layout.activity_card_info)
         setFrameLayoutContent(0, 1, 0)
 
-        var url = "https://nav-com.ru/egks?number="
+        var url = "https://nav-com.ru/egks/v2.php?query=getInfo&number="
         val intent = intent
         val cardNum = intent.getStringExtra("number")
         val cardName = intent.getStringExtra("name")
+        var cardImage = intent.getStringExtra("image")
         val balTw = findViewById<TextView>(R.id.bal)
         val expTw = findViewById<TextView>(R.id.exp)
         val toolbarText = findViewById<TextView>(R.id.custom_title)
@@ -37,6 +40,64 @@ class CardInfo : AppCompatActivity() {
         val backBtn = findViewById<ImageView>(R.id.backButton)
         val delBtn = findViewById<ImageView>(R.id.deleteCard)
         toolbarText.text = cardName
+        val cardImageInArray = cardImage
+
+        if (cardImage == "card000") {
+            val urlImage = "https://nav-com.ru/egks/v2.php?query=getCard&number=$cardNum"
+            val getResponse = Get()
+            val uri: Uri = Uri.parse("android.resource://nav.com.ru.egks/drawable/card")
+            cardImg.setImageURI(null)
+            cardImg.setImageURI(uri)
+
+            getResponse.run(
+                urlImage,
+                object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        runOnUiThread {
+                            cardImage = "card000"
+                            val uri: Uri = Uri.parse("android.resource://nav.com.ru.egks/drawable/" + (cardImage?.split(".")
+                                ?.get(0) ?: "card000"))
+                            cardImg.setImageURI(null)
+                            cardImg.setImageURI(uri)
+                        }
+                    }
+
+                    @Throws(IOException::class)
+                    override fun onResponse(call: Call, response: Response) {
+                        if (response.body != null) {
+                            val stringResponse = response.body!!.string()
+                            runOnUiThread {
+                                cardImage = stringResponse
+                                val uri: Uri = Uri.parse("android.resource://nav.com.ru.egks/drawable/" + (cardImage?.split(".")
+                                    ?.get(0) ?: "card000"))
+                                cardImg.setImageURI(null)
+                                cardImg.setImageURI(uri)
+                                val cardsString = getSavedCards()
+                                val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
+                                val array2 = arrayListOf<String>()
+                                cardsArray?.filterTo(array2, { it != "$cardImageInArray;$cardNum;$cardName" })
+                                array2.plus("$cardImg;$cardNum;$cardName")
+                                saveCards(array2.joinToString(separator = "--divider--"))
+                            }
+                        } else {
+                            runOnUiThread {
+                                cardImage = "card000"
+                                val uri: Uri = Uri.parse("android.resource://nav.com.ru.egks/drawable/" + (cardImage?.split(".")
+                                    ?.get(0) ?: "card000"))
+                                cardImg.setImageURI(null)
+                                cardImg.setImageURI(uri)
+                            }
+                        }
+                    }
+                }
+            )
+        } else {
+            val uri: Uri = Uri.parse("android.resource://nav.com.ru.egks/drawable/" + (cardImage?.split(".")
+                ?.get(0) ?: "card000"))
+            cardImg.setImageURI(null)
+            cardImg.setImageURI(uri)
+        }
+
 
         backBtn.setOnClickListener {
             finish()
@@ -51,7 +112,7 @@ class CardInfo : AppCompatActivity() {
                 val cardsString = getSavedCards()
                 val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
                 val array2 = arrayListOf<String>()
-                cardsArray?.filterTo(array2, { it != "$cardNum;$cardName" })
+                cardsArray?.filterTo(array2, { it != "$cardImageInArray;$cardNum;$cardName" })
                 saveCards(array2.joinToString(separator = "--divider--"))
                 Toast.makeText(this, "Карта удалена", Toast.LENGTH_LONG).show()
                 finish()
@@ -88,11 +149,6 @@ class CardInfo : AppCompatActivity() {
                             balTw.text = if ((cardInfo.rub === null) or (cardInfo.cent === null)) "нет данных" else cardInfo.rub.toString() + "р. " + cardInfo.cent.toString() + "к."
                             expTw.text = if (cardInfo.exp === null) "нет данных" else if (cardInfo.exp.isEmpty()) "нет данных" else cardInfo.exp
 
-                            Picasso.with(this@CardInfo)
-                                .load(cardInfo.img)
-                                .placeholder(R.drawable.card)
-                                .error(R.drawable.card)
-                                .into(cardImg)
                             setFrameLayoutContent(1, 0, 0)
                         }
                     } else {

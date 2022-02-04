@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ImageButton
@@ -14,6 +15,8 @@ import nav.com.ru.egks.models.CardsModel
 
 const val PREFS_NAME = "nav-com.egks"
 const val KEY_TYPE = "prefs.cards"
+const val KEY_VERSION = "prefs.version"
+const val CURRENT_VERSION = 2
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +27,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val addCard = findViewById<FloatingActionButton>(R.id.addCard)
         val addCardFirst = findViewById<ImageButton>(R.id.addCardFirst)
+
+        Log.e("old", getSavedCards()+"")
+
+        if (getVersion() < CURRENT_VERSION) {
+            saveVersion(CURRENT_VERSION)
+        }
 
         addCard.setOnClickListener {
             val intent = Intent(this@MainActivity, AddCard::class.java)
@@ -53,8 +62,25 @@ class MainActivity : AppCompatActivity() {
         val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
         if (cardsArray != null) {
             for (cardData in cardsArray) {
-                if (cardData.indexOf(";") > -1)
-                    listOfCards.add(CardsModel(cardData.split(";")[0], cardData.split(";")[1]))
+                if (cardData.indexOf(";") > -1) {
+                    if (cardData.split(";").toTypedArray().size == 2) {
+                        listOfCards.add(
+                            CardsModel(
+                                "card000.jpg",
+                                cardData.split(";")[0],
+                                cardData.split(";")[1]
+                            )
+                        )
+                    } else {
+                        listOfCards.add(
+                            CardsModel(
+                                cardData.split(";")[0],
+                                cardData.split(";")[1],
+                                cardData.split(";")[2]
+                            )
+                        )
+                    }
+                }
             }
         }
 
@@ -67,6 +93,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, CardInfo::class.java)
                 intent.putExtra("name", listOfCards[position].name)
                 intent.putExtra("number", listOfCards[position].number)
+                intent.putExtra("image", listOfCards[position].img)
                 startActivity(intent)
             }
         } else {
@@ -93,5 +120,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getSavedCards() = sharedPrefs.getString(KEY_TYPE, "")
+
+    private fun getVersion() = sharedPrefs.getInt(KEY_VERSION, 0)
+
+    private fun saveVersion (ver: Int) = sharedPrefs.edit().putInt(KEY_VERSION, ver).apply()
 
 }

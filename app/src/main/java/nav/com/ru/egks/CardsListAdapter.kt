@@ -1,10 +1,12 @@
 package nav.com.ru.egks
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import nav.com.ru.egks.models.CardsModel
 
@@ -27,10 +29,14 @@ class CardsListAdapter (
         val view = inflater.inflate(layout, parent, false)
         val numberCard = view.findViewById<TextView>(R.id.number_card)
         val nameCard = view.findViewById<TextView>(R.id.name_card)
+        val imageCard = view.findViewById<ImageView>(R.id.image_card)
         val obj: CardsModel = jsonObject[position]
 
         numberCard.text = getDisplayNumber(obj.number)
         nameCard.text = obj.name
+        val uri: Uri = Uri.parse("android.resource://nav.com.ru.egks/drawable/" + obj.img.split(".")[0])
+        imageCard.setImageURI(null)
+        imageCard.setImageURI(uri)
 
         return view
     }
