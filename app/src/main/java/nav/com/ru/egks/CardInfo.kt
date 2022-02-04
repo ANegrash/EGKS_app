@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.gson.Gson
-import com.squareup.picasso.Picasso
 import nav.com.ru.egks.models.CardInfoModel
 import okhttp3.Call
 import okhttp3.Callback

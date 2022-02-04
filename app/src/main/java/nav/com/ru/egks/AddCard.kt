@@ -38,7 +38,7 @@ class AddCard : AppCompatActivity() {
                     val url = "https://nav-com.ru/egks/v2.php?query=getCard&number=" + number.text
 
                     val getResponse = Get()
-                    var cardImage = ""
+                    var cardImage: String
 
                     getResponse.run(
                         url,
