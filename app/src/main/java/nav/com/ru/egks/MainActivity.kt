@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ImageButton
@@ -27,8 +26,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val addCard = findViewById<FloatingActionButton>(R.id.addCard)
         val addCardFirst = findViewById<ImageButton>(R.id.addCardFirst)
-
-        Log.e("old", getSavedCards()+"")
 
         if (getVersion() < CURRENT_VERSION) {
             saveVersion(CURRENT_VERSION)
@@ -61,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         val cardsString = getSavedCards()
         val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
         if (cardsArray != null) {
+            cardsArray.reverse()
             for (cardData in cardsArray) {
                 if (cardData.indexOf(";") > -1) {
                     if (cardData.split(";").toTypedArray().size == 2) {

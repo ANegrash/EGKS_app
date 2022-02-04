@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -32,7 +31,7 @@ class CardInfo : AppCompatActivity() {
         val intent = intent
         val cardNum = intent.getStringExtra("number")
         val cardName = intent.getStringExtra("name")
-        var cardImage = intent.getStringExtra("image")
+        var cardImage = intent.getStringExtra("image")?.split(".")?.get(0)
         val balTw = findViewById<TextView>(R.id.bal)
         val expTw = findViewById<TextView>(R.id.exp)
         val toolbarText = findViewById<TextView>(R.id.custom_title)
@@ -40,7 +39,7 @@ class CardInfo : AppCompatActivity() {
         val backBtn = findViewById<ImageView>(R.id.backButton)
         val delBtn = findViewById<ImageView>(R.id.deleteCard)
         toolbarText.text = cardName
-        val cardImageInArray = cardImage
+        val cardImageInArray = intent.getStringExtra("image")
 
         if (cardImage == "card000") {
             val urlImage = "https://nav-com.ru/egks/v2.php?query=getCard&number=$cardNum"
@@ -75,9 +74,11 @@ class CardInfo : AppCompatActivity() {
                                 val cardsString = getSavedCards()
                                 val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
                                 val array2 = arrayListOf<String>()
+                                val array3 = arrayListOf<String>()
                                 cardsArray?.filterTo(array2, { it != "$cardImageInArray;$cardNum;$cardName" })
-                                array2.plus("$cardImg;$cardNum;$cardName")
-                                saveCards(array2.joinToString(separator = "--divider--"))
+                                array2.filterTo(array3, { it != "$cardNum;$cardName" })
+                                array3 += "$cardImage;$cardNum;$cardName"
+                                saveCards(array3.joinToString(separator = "--divider--"))
                             }
                         } else {
                             runOnUiThread {
@@ -112,8 +113,10 @@ class CardInfo : AppCompatActivity() {
                 val cardsString = getSavedCards()
                 val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
                 val array2 = arrayListOf<String>()
+                val array3 = arrayListOf<String>()
                 cardsArray?.filterTo(array2, { it != "$cardImageInArray;$cardNum;$cardName" })
-                saveCards(array2.joinToString(separator = "--divider--"))
+                array2.filterTo(array3, { it != "$cardNum;$cardName" })
+                saveCards(array3.joinToString(separator = "--divider--"))
                 Toast.makeText(this, "Карта удалена", Toast.LENGTH_LONG).show()
                 finish()
             }

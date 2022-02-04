@@ -4,12 +4,9 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
-import com.google.gson.Gson
-import nav.com.ru.egks.models.CardInfoModel
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
@@ -37,45 +34,62 @@ class AddCard : AppCompatActivity() {
         save.setOnClickListener {
             if (number.text.isNotEmpty() && name.text.isNotEmpty()) {
 
-                val url = "https://nav-com.ru/egks/v2.php?query=getCard&number=" + number.text
-                Log.e("url", url)
+                if (number.text.length == 9) {
+                    val url = "https://nav-com.ru/egks/v2.php?query=getCard&number=" + number.text
 
-                val getResponse = Get()
-                var cardImage = ""
+                    val getResponse = Get()
+                    var cardImage = ""
 
-                getResponse.run(
-                    url,
-                    object : Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                            runOnUiThread {
-                                cardImage = "card000.jpg"
-                                addNewCard(cardImage, number.text.toString(), name.text.toString())
-                                Log.e("err1", e.stackTraceToString())
-                                finish()
-                            }
-                        }
-
-                        @Throws(IOException::class)
-                        override fun onResponse(call: Call, response: Response) {
-                            if (response.body != null) {
-                                val stringResponse = response.body!!.string()
-                                runOnUiThread {
-                                    cardImage = stringResponse
-                                    addNewCard(cardImage, number.text.toString(), name.text.toString())
-                                    Log.e("success", cardImage)
-                                    finish()
-                                }
-                            } else {
+                    getResponse.run(
+                        url,
+                        object : Callback {
+                            override fun onFailure(call: Call, e: IOException) {
                                 runOnUiThread {
                                     cardImage = "card000.jpg"
-                                    addNewCard(cardImage, number.text.toString(), name.text.toString())
-                                    Log.e("err2", "WTF?!")
+                                    addNewCard(
+                                        cardImage,
+                                        number.text.toString(),
+                                        name.text.toString()
+                                    )
                                     finish()
                                 }
                             }
+
+                            @Throws(IOException::class)
+                            override fun onResponse(call: Call, response: Response) {
+                                if (response.body != null) {
+                                    val stringResponse = response.body!!.string()
+                                    runOnUiThread {
+                                        cardImage = stringResponse
+                                        addNewCard(
+                                            cardImage,
+                                            number.text.toString(),
+                                            name.text.toString()
+                                        )
+                                        finish()
+                                    }
+                                } else {
+                                    runOnUiThread {
+                                        cardImage = "card000.jpg"
+                                        addNewCard(
+                                            cardImage,
+                                            number.text.toString(),
+                                            name.text.toString()
+                                        )
+                                        finish()
+                                    }
+                                }
+                            }
                         }
-                    }
-                )
+                    )
+                } else {
+                    val cardImage = "card000.jpg"
+                    addNewCard(
+                        cardImage,
+                        number.text.toString(),
+                        name.text.toString()
+                    )
+                }
             } else {
                 val toastText = if (number.text.isEmpty()){
                     "Поле номера не может быть пустым"
