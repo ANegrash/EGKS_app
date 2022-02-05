@@ -27,6 +27,9 @@ class AddCard : AppCompatActivity() {
         val inputType = InputType.TYPE_CLASS_NUMBER
         number.inputType = inputType
 
+        val nextCardNumber = getSavedCards()?.split("--divider--")?.size
+        name.setText("Карта $nextCardNumber")
+
         back.setOnClickListener {
             finish()
         }
