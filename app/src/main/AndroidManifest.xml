@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="nav.com.ru.egks">
+    package="nav.com.ru.egksev">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,13 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EGKS">
         <activity
-            android:name=".AddCard"
+            android:name="nav.com.ru.egksev.AddCard"
             android:exported="false" />
         <activity
-            android:name=".CardInfo"
+            android:name="nav.com.ru.egksev.CardInfo"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="nav.com.ru.egksev.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
