@@ -1,12 +1,14 @@
 package nav.com.ru.egksev
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
+import android.view.Window
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
@@ -17,12 +19,13 @@ class AddCard : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
-        setContentView(R.layout.activity_add_card)
+        window.statusBarColor = Color.parseColor("#ffb32d")
+        setContentView(R.layout.new_add_card)
 
-        val number = findViewById<EditText>(R.id.editTextNumber)
-        val name = findViewById<EditText>(R.id.editTextCardName)
-        val back = findViewById<ImageButton>(R.id.backBtn_add)
-        val save = findViewById<ImageButton>(R.id.saveBtn_add)
+        val number = findViewById<EditText>(R.id.cardNumberInput)
+        val name = findViewById<EditText>(R.id.cardNameInput)
+        val back = findViewById<ImageButton>(R.id.cancelAdding)
+        val save = findViewById<ImageButton>(R.id.saveCard)
 
         val inputType = InputType.TYPE_CLASS_NUMBER
         number.inputType = inputType

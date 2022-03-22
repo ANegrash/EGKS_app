@@ -6,10 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ListView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import nav.com.ru.egksev.models.CardsModel
 
 const val PREFS_NAME = "nav-com.egks"
@@ -23,20 +23,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val addCard = findViewById<FloatingActionButton>(R.id.addCard)
-        val addCardFirst = findViewById<ImageButton>(R.id.addCardFirst)
+        setContentView(R.layout.new_activity)
+        val addCard = findViewById<Button>(R.id.plusBtn)
+        val infoBtn = findViewById<ImageButton>(R.id.infoBtn)
+        val settingsBtn = findViewById<ImageButton>(R.id.settingsBtn)
 
         if (getVersion() < CURRENT_VERSION) {
             saveVersion(CURRENT_VERSION)
         }
 
         addCard.setOnClickListener {
-            val intent = Intent(this@MainActivity, AddCard::class.java)
-            startActivity(intent)
-        }
-
-        addCardFirst.setOnClickListener {
             val intent = Intent(this@MainActivity, AddCard::class.java)
             startActivity(intent)
         }
@@ -51,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadList() {
-        val listView = findViewById<ListView>(R.id.listView)
+        val listView = findViewById<ListView>(R.id.cardList)
         val listOfCards = mutableListOf<CardsModel>()
         listOfCards.clear()
 
@@ -84,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
         if (listOfCards.isNotEmpty()) {
             setFrameLayoutContent(1, 0)
-            val stateAdapter = CardsListAdapter(this@MainActivity, R.layout.item_card, listOfCards)
+            val stateAdapter = CardsListAdapter(this@MainActivity, R.layout.recycler_view_item, listOfCards)
             listView.adapter = stateAdapter
 
             listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
@@ -103,8 +99,8 @@ class MainActivity : AppCompatActivity() {
         main: Int = 1,
         first: Int = 0
     ) {
-        val mainLayout = findViewById<ConstraintLayout>(R.id.mainPanel)
-        val firstLayout = findViewById<ConstraintLayout>(R.id.firstPanel)
+        val mainLayout = findViewById<ConstraintLayout>(R.id.mainScreen)
+        val firstLayout = findViewById<ConstraintLayout>(R.id.errorScreen)
 
         when (main) {
             0 -> mainLayout.visibility = View.GONE
