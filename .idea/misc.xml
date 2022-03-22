@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/add_item.xml" value="0.3769230769230769" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/background_add.xml" value="0.3125" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/background_card_check.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/background_card_info.xml" value="0.3125" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/background_main.xml" value="0.1" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/blue_circle.xml" value="0.3769230769230769" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/bottom_menu.xml" value="0.1" />
@@ -12,26 +14,36 @@
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/circle.xml" value="0.3769230769230769" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/edit_text_item.xml" value="0.3125" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/green_circle.xml" value="0.3769230769230769" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_at_solid.xml" value="0.134" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_back.xml" value="0.3769230769230769" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_ban_solid.xml" value="0.3125" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_check_solid.xml" value="0.3769230769230769" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_circle_question_solid.xml" value="0.1" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_cog_solid.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_credit_card_solid.xml" value="0.1" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_delete.xml" value="0.3769230769230769" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_edit.xml" value="0.3769230769230769" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_floppy_disk_solid.xml" value="0.3125" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_google_play_brands.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_internet_explorer_brands.xml" value="0.134" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_phone_solid.xml" value="0.1" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_plus.xml" value="0.1" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_plus_solid.xml" value="0.3769230769230769" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_question_solid.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/ic_ruble_sign_solid.xml" value="0.3125" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/roundrect.xml" value="0.23697916666666666" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/spinner_ring.xml" value="0.3125" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/drawable/white_circle.xml" value="0.1" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/layout/activity_add_card.xml" value="0.23052536231884058" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/layout/activity_card_info.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/layout/activity_check_card.xml" value="0.25" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/layout/activity_info.xml" value="0.25" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/layout/activity_main.xml" value="0.24365942028985507" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/layout/bottom_menu.xml" value="0.3383152173913043" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/layout/item_card.xml" value="0.24365942028985507" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/layout/new_activity.xml" value="0.33" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/layout/new_add_card.xml" value="0.3383152173913043" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/layout/new_card_info.xml" value="0.3383152173913043" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/layout/recycler_view_item.xml" value="0.3247863247863248" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1305" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/EGKS/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />

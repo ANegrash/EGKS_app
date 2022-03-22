@@ -1,9 +1,11 @@
 package nav.com.ru.egksev
 
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -23,7 +25,9 @@ class CardInfo : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_card_info)
+        supportActionBar?.hide()
+        window.statusBarColor = Color.parseColor("#34e879")
+        setContentView(R.layout.new_card_info)
         setFrameLayoutContent(0, 1, 0)
 
         var url = "https://nav-com.ru/egks/v2.php?query=getInfo&number="
@@ -31,13 +35,12 @@ class CardInfo : AppCompatActivity() {
         val cardNum = intent.getStringExtra("number")
         val cardName = intent.getStringExtra("name")
         var cardImage = intent.getStringExtra("image")?.split(".")?.get(0)
-        val balTw = findViewById<TextView>(R.id.bal)
-        val expTw = findViewById<TextView>(R.id.exp)
-        val toolbarText = findViewById<TextView>(R.id.custom_title)
-        val cardImg = findViewById<ImageView>(R.id.cardImage)
-        val backBtn = findViewById<ImageView>(R.id.backButton)
-        val delBtn = findViewById<ImageView>(R.id.deleteCard)
-        toolbarText.text = cardName
+        val balTw = findViewById<TextView>(R.id.balanceText)
+        val expTw = findViewById<TextView>(R.id.expiresDate)
+        val cardImg = findViewById<ImageView>(R.id.cardImageInfo)
+        val backBtn = findViewById<ImageView>(R.id.backToMenu)
+        val delBtn = findViewById<ImageView>(R.id.deleteCardButton)
+        val deleteCardError = findViewById<TextView>(R.id.deleteCardError)
         val cardImageInArray = intent.getStringExtra("image")
 
         if (cardImage == "card000") {
@@ -74,8 +77,8 @@ class CardInfo : AppCompatActivity() {
                                 val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
                                 val array2 = arrayListOf<String>()
                                 val array3 = arrayListOf<String>()
-                                cardsArray?.filterTo(array2, { it != "$cardImageInArray;$cardNum;$cardName" })
-                                array2.filterTo(array3, { it != "$cardNum;$cardName" })
+                                cardsArray?.filterTo(array2) { it != "$cardImageInArray;$cardNum;$cardName" }
+                                array2.filterTo(array3) { it != "$cardNum;$cardName" }
                                 array3 += "$cardImage;$cardNum;$cardName"
                                 saveCards(array3.joinToString(separator = "--divider--"))
                             }
@@ -106,15 +109,37 @@ class CardInfo : AppCompatActivity() {
         delBtn.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Удаление карты")
-            builder.setMessage("Вы уверены, что хотите удалить карту \"$cardName\"?")
+            builder.setMessage("Вы уверены, что хотите удалить \"$cardName\"?")
 
             builder.setPositiveButton("Да") { _, _ ->
                 val cardsString = getSavedCards()
                 val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
                 val array2 = arrayListOf<String>()
                 val array3 = arrayListOf<String>()
-                cardsArray?.filterTo(array2, { it != "$cardImageInArray;$cardNum;$cardName" })
-                array2.filterTo(array3, { it != "$cardNum;$cardName" })
+                cardsArray?.filterTo(array2) { it != "$cardImageInArray;$cardNum;$cardName" }
+                array2.filterTo(array3) { it != "$cardNum;$cardName" }
+                saveCards(array3.joinToString(separator = "--divider--"))
+                Toast.makeText(this, "Карта удалена", Toast.LENGTH_LONG).show()
+                finish()
+            }
+
+            builder.setNegativeButton("Нет") {_, _ ->}
+
+            builder.show()
+        }
+
+        deleteCardError.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Удаление карты")
+            builder.setMessage("Вы уверены, что хотите удалить \"$cardName\"?")
+
+            builder.setPositiveButton("Да") { _, _ ->
+                val cardsString = getSavedCards()
+                val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
+                val array2 = arrayListOf<String>()
+                val array3 = arrayListOf<String>()
+                cardsArray?.filterTo(array2) { it != "$cardImageInArray;$cardNum;$cardName" }
+                array2.filterTo(array3) { it != "$cardNum;$cardName" }
                 saveCards(array3.joinToString(separator = "--divider--"))
                 Toast.makeText(this, "Карта удалена", Toast.LENGTH_LONG).show()
                 finish()
@@ -135,6 +160,7 @@ class CardInfo : AppCompatActivity() {
                 override fun onFailure(call: Call, e: IOException) {
                     runOnUiThread {
                         setFrameLayoutContent(0, 0, 1)
+                        setError(0)
                     }
                 }
 
@@ -146,16 +172,30 @@ class CardInfo : AppCompatActivity() {
 
                         val cardInfo: CardInfoModel = gson.fromJson(stringResponse, CardInfoModel::class.java)
                         runOnUiThread {
-                            supportActionBar?.hide()
 
-                            balTw.text = if ((cardInfo.rub === null) or (cardInfo.cent === null)) "нет данных" else cardInfo.rub.toString() + "р. " + cardInfo.cent.toString() + "к."
-                            expTw.text = if (cardInfo.exp === null) "нет данных" else if (cardInfo.exp.isEmpty()) "нет данных" else cardInfo.exp
+                            var balance = ""
+                            if (!(cardInfo.rub === null) or !(cardInfo.cent === null)) {
+                                balance = cardInfo.rub.toString()
+                                if (cardInfo.cent !== null)
+                                    if (cardInfo.cent.toString() != "00")
+                                        balance += "," + cardInfo.cent.toString()
+                            }
 
-                            setFrameLayoutContent(1, 0, 0)
+                            if (balance.isEmpty()) {
+                                balTw.text = "0"
+                                setFrameLayoutContent(0, 0, 1)
+                                setError(1)
+                            } else {
+                                balTw.text = balance
+                                setFrameLayoutContent(1, 0, 0)
+                            }
+
+                            expTw.text = if (cardInfo.exp === null) "" else if (cardInfo.exp.isEmpty()) "" else "до " + cardInfo.exp
                         }
                     } else {
                         runOnUiThread {
                             setFrameLayoutContent(0, 0, 1)
+                            setError(0)
                         }
                     }
                 }
@@ -163,14 +203,43 @@ class CardInfo : AppCompatActivity() {
         )
     }
 
+    private fun setError (
+        errorCode: Int = 0
+    ) {
+        val stickerError = findViewById<ImageView>(R.id.errorSticker)
+        val messageError = findViewById<TextView>(R.id.errorText)
+        val deleteCard = findViewById<TextView>(R.id.deleteCardError)
+        deleteCard.visibility = View.GONE
+        var image = ""
+
+        if (errorCode == 0) {
+            //сервер не отвечает
+            image = "cry"
+            messageError.text = "Сервер не отвечает"
+        }
+
+        if (errorCode == 1) {
+            //карта не найдена
+            deleteCard.visibility = View.VISIBLE
+            image = "think"
+            messageError.text = "Карта не найдена"
+        }
+
+        val uri: Uri = Uri.parse("android.resource://nav.com.ru.egksev/drawable/$image")
+        stickerError.setImageURI(null)
+        stickerError.setImageURI(uri)
+
+
+    }
+
     private fun setFrameLayoutContent (
         main: Int = 1,
         loading: Int = 0,
         error: Int = 0
     ) {
-        val mainLayout = findViewById<ConstraintLayout>(R.id.main)
-        val loadingLayout = findViewById<ConstraintLayout>(R.id.loading)
-        val errorLayout = findViewById<ConstraintLayout>(R.id.error)
+        val mainLayout = findViewById<ConstraintLayout>(R.id.mainPanel)
+        val loadingLayout = findViewById<ConstraintLayout>(R.id.loadingPanel)
+        val errorLayout = findViewById<ConstraintLayout>(R.id.errorPanel)
 
         when (main) {
             0 -> mainLayout.visibility = View.GONE

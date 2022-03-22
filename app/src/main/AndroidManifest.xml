@@ -13,13 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EGKS">
         <activity
-            android:name="nav.com.ru.egksev.AddCard"
+            android:name=".CheckCard"
             android:exported="false" />
         <activity
-            android:name="nav.com.ru.egksev.CardInfo"
+            android:name=".InfoActivity"
             android:exported="false" />
         <activity
-            android:name="nav.com.ru.egksev.MainActivity"
+            android:name=".AddCard"
+            android:exported="false" />
+        <activity
+            android:name=".CardInfo"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

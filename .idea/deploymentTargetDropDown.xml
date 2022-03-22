@@ -3,15 +3,15 @@
   <component name="deploymentTargetDropDown">
     <targetSelectedWithDropDown>
       <Target>
-        <type value="QUICK_BOOT_TARGET" />
+        <type value="COLD_BOOT_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\admin\.android\avd\Nexus_5X_API_30.avd" />
+            <value value="C:\Users\admin\.android\avd\Samsung_Galaxy_A50_API_26.avd" />
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-02-04T20:21:21.626268Z" />
+    <timeTargetWasSelectedWithDropDown value="2022-03-22T18:12:23.219199700Z" />
   </component>
 </project>

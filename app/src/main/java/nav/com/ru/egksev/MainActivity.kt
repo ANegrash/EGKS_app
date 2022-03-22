@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.new_activity)
         val addCard = findViewById<Button>(R.id.plusBtn)
         val infoBtn = findViewById<ImageButton>(R.id.infoBtn)
-        val settingsBtn = findViewById<ImageButton>(R.id.settingsBtn)
+        val checkCardBtn = findViewById<ImageButton>(R.id.checkBtn)
 
         if (getVersion() < CURRENT_VERSION) {
             saveVersion(CURRENT_VERSION)
@@ -34,6 +34,16 @@ class MainActivity : AppCompatActivity() {
 
         addCard.setOnClickListener {
             val intent = Intent(this@MainActivity, AddCard::class.java)
+            startActivity(intent)
+        }
+
+        infoBtn.setOnClickListener {
+            val intent = Intent(this@MainActivity, InfoActivity::class.java)
+            startActivity(intent)
+        }
+
+        checkCardBtn.setOnClickListener {
+            val intent = Intent(this@MainActivity, CheckCard::class.java)
             startActivity(intent)
         }
 

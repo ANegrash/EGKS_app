@@ -38,14 +38,4 @@ class CardsListAdapter (
 
         return view
     }
-
-    private fun getDisplayNumber (
-        number: String
-    ): String {
-        return if (number.length == 9) {
-            val num = number.split("").toTypedArray()
-            num[1] + num[2] + num[3] + " " + num[4] + num[5] + num[6] + " " + num[7] + num[8] + num[9]
-        } else
-            number
-    }
 }
