@@ -39,12 +39,11 @@ class CheckCard : AppCompatActivity() {
 
         check.setOnClickListener {
             setFrameLayoutContent(0, 1, 0)
-            url += number.text
 
             val getResponse = Get()
 
             getResponse.run(
-                url,
+                url + number.text,
                 object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
                         runOnUiThread {
