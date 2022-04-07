@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity)
+        supportActionBar?.hide()
         val addCard = findViewById<Button>(R.id.plusBtn)
         val infoBtn = findViewById<ImageButton>(R.id.infoBtn)
         val checkCardBtn = findViewById<ImageButton>(R.id.checkBtn)

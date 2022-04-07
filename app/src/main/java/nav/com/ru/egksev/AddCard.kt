@@ -38,6 +38,7 @@ class AddCard : AppCompatActivity() {
         }
 
         save.setOnClickListener {
+            save.isEnabled = false
             if (number.text.isNotEmpty() && name.text.isNotEmpty()) {
 
                 if (number.text.length == 9) {
@@ -103,6 +104,7 @@ class AddCard : AppCompatActivity() {
                     "Поле имени не может быть пустым"
                 }
                 Toast.makeText(this, toastText, Toast.LENGTH_LONG).show()
+                save.isEnabled = true
             }
         }
     }
