@@ -300,7 +300,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/open_sans"
-                android:text="версия 1.2.0"
+                android:text="версия 1.2.1 от 07.04.22"
                 android:textAlignment="center"
                 android:textColor="@color/white" />
 
