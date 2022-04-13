@@ -4,10 +4,8 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
-import android.view.Window
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.Call
 import okhttp3.Callback
@@ -26,9 +24,14 @@ class AddCard : AppCompatActivity() {
         val name = findViewById<EditText>(R.id.cardNameInput)
         val back = findViewById<ImageButton>(R.id.cancelAdding)
         val save = findViewById<ImageButton>(R.id.saveCard)
+        val progress = findViewById<ProgressBar>(R.id.addCardProgressBar)
+        val wait = findViewById<TextView>(R.id.addCardWait)
 
         val inputType = InputType.TYPE_CLASS_NUMBER
         number.inputType = inputType
+
+        progress.visibility = View.GONE
+        wait.visibility = View.GONE
 
         val nextCardNumber = getSavedCards()?.split("--divider--")?.size
         name.setText("Карта $nextCardNumber")
@@ -39,6 +42,8 @@ class AddCard : AppCompatActivity() {
 
         save.setOnClickListener {
             save.isEnabled = false
+            progress.visibility = View.VISIBLE
+            wait.visibility = View.VISIBLE
             if (number.text.isNotEmpty() && name.text.isNotEmpty()) {
 
                 if (number.text.length == 9) {

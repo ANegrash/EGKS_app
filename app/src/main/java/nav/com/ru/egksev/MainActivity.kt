@@ -15,6 +15,7 @@ import nav.com.ru.egksev.models.CardsModel
 const val PREFS_NAME = "nav-com.egks"
 const val KEY_TYPE = "prefs.cards"
 const val KEY_VERSION = "prefs.version"
+const val KEY_ITEM_TYPE = "prefs.item_type"
 const val CURRENT_VERSION = 2
 
 class MainActivity : AppCompatActivity() {
@@ -28,9 +29,29 @@ class MainActivity : AppCompatActivity() {
         val addCard = findViewById<Button>(R.id.plusBtn)
         val infoBtn = findViewById<ImageButton>(R.id.infoBtn)
         val checkCardBtn = findViewById<ImageButton>(R.id.checkBtn)
+        val rowBtn = findViewById<ImageButton>(R.id.rowITBtn)
+        val blockBtn = findViewById<ImageButton>(R.id.blockITBtn)
+
+        val itemType = getItemType() // 0 = row, 1 = block
+        if (itemType == 0)
+            setItemTypeBtnContent(1, 0)
+        else
+            setItemTypeBtnContent(0, 1)
 
         if (getVersion() < CURRENT_VERSION) {
             saveVersion(CURRENT_VERSION)
+        }
+
+        rowBtn.setOnClickListener {
+            saveItemType(0)
+            setItemTypeBtnContent(1, 0)
+            loadList(0)
+        }
+
+        blockBtn.setOnClickListener {
+            saveItemType(1)
+            setItemTypeBtnContent(0, 1)
+            loadList(1)
         }
 
         addCard.setOnClickListener {
@@ -48,16 +69,19 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        loadList()
+        loadList(itemType)
     }
 
     override fun onResume() {
         super.onResume()
 
-        loadList()
+        loadList(getItemType())
     }
 
-    private fun loadList() {
+    private fun loadList(
+        itemType: Int
+    ) {
+
         val listView = findViewById<ListView>(R.id.cardList)
         val listOfCards = mutableListOf<CardsModel>()
         listOfCards.clear()
@@ -92,7 +116,12 @@ class MainActivity : AppCompatActivity() {
         if (listOfCards.isNotEmpty()) {
             setFrameLayoutContent(1, 0)
             val stateAdapter = CardsListAdapter(this@MainActivity, R.layout.recycler_view_item, listOfCards)
-            listView.adapter = stateAdapter
+            val stateAdapter2 = CardsListAdapter(this@MainActivity, R.layout.recycler_view_item_2, listOfCards)
+
+            if (itemType == 0)
+                listView.adapter = stateAdapter
+            else
+                listView.adapter = stateAdapter2
 
             listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                 val intent = Intent(this@MainActivity, CardInfo::class.java)
@@ -112,10 +141,17 @@ class MainActivity : AppCompatActivity() {
     ) {
         val mainLayout = findViewById<ConstraintLayout>(R.id.mainScreen)
         val firstLayout = findViewById<ConstraintLayout>(R.id.errorScreen)
+        val selectorLayout = findViewById<ConstraintLayout>(R.id.typeITLayout)
 
         when (main) {
-            0 -> mainLayout.visibility = View.GONE
-            1 -> mainLayout.visibility = View.VISIBLE
+            0 -> {
+                mainLayout.visibility = View.GONE
+                selectorLayout.visibility = View.GONE
+            }
+            1 -> {
+                mainLayout.visibility = View.VISIBLE
+                selectorLayout.visibility = View.VISIBLE
+            }
         }
 
         when (first) {
@@ -124,10 +160,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setItemTypeBtnContent (
+        row: Int = 1,
+        block: Int = 0
+    ) {
+        val rowBtn = findViewById<ImageButton>(R.id.rowITBtn)
+        val blockBtn = findViewById<ImageButton>(R.id.blockITBtn)
+
+        when (row) {
+            0 -> {
+                rowBtn.setImageResource(R.drawable.list_icon)
+                rowBtn.setBackgroundResource(R.color.transp)
+            }
+            1 -> {
+                rowBtn.setImageResource(R.drawable.list_icon_blue)
+                rowBtn.setBackgroundResource(R.drawable.item_selector_shape)
+            }
+        }
+
+        when (block) {
+            0 -> {
+                blockBtn.setImageResource(R.drawable.block_icon)
+                blockBtn.setBackgroundResource(R.color.transp)
+            }
+            1 -> {
+                blockBtn.setImageResource(R.drawable.block_icon_blue)
+                blockBtn.setBackgroundResource(R.drawable.item_selector_shape)
+            }
+        }
+    }
+
     private fun getSavedCards() = sharedPrefs.getString(KEY_TYPE, "")
 
     private fun getVersion() = sharedPrefs.getInt(KEY_VERSION, 0)
 
+    private fun getItemType() = sharedPrefs.getInt(KEY_ITEM_TYPE, 0)
+
     private fun saveVersion (ver: Int) = sharedPrefs.edit().putInt(KEY_VERSION, ver).apply()
+
+    private fun saveItemType (it: Int) = sharedPrefs.edit().putInt(KEY_ITEM_TYPE, it).apply()
 
 }

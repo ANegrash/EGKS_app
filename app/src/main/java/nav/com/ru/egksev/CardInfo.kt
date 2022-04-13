@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.gson.Gson
+import com.squareup.picasso.Picasso
 import nav.com.ru.egksev.models.CardInfoModel
 import okhttp3.Call
 import okhttp3.Callback
@@ -30,11 +30,10 @@ class CardInfo : AppCompatActivity() {
         setContentView(R.layout.new_card_info)
         setFrameLayoutContent(0, 1, 0)
 
-        var url = "https://nav-com.ru/egks/v2.php?query=getInfo&number="
+        var url = "https://nav-com.ru/egks/v3.php?query=getInfo&number="
         val intent = intent
         val cardNum = intent.getStringExtra("number")
         val cardName = intent.getStringExtra("name")
-        var cardImage = intent.getStringExtra("image")?.split(".")?.get(0)
         val balTw = findViewById<TextView>(R.id.balanceText)
         val expTw = findViewById<TextView>(R.id.expiresDate)
         val cardImg = findViewById<ImageView>(R.id.cardImageInfo)
@@ -43,63 +42,12 @@ class CardInfo : AppCompatActivity() {
         val deleteCardError = findViewById<TextView>(R.id.deleteCardError)
         val cardImageInArray = intent.getStringExtra("image")
 
-        if (cardImage == "card000") {
-            val urlImage = "https://nav-com.ru/egks/v2.php?query=getCard&number=$cardNum"
-            val getResponse = Get()
-            val uri: Uri = Uri.parse("android.resource://nav.com.ru.egksev/drawable/card")
-            cardImg.setImageURI(null)
-            cardImg.setImageURI(uri)
-
-            getResponse.run(
-                urlImage,
-                object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                        runOnUiThread {
-                            cardImage = "card000"
-                            val uri: Uri = Uri.parse("android.resource://nav.com.ru.egksev/drawable/" + (cardImage?.split(".")
-                                ?.get(0) ?: "card000"))
-                            cardImg.setImageURI(null)
-                            cardImg.setImageURI(uri)
-                        }
-                    }
-
-                    @Throws(IOException::class)
-                    override fun onResponse(call: Call, response: Response) {
-                        if (response.body != null) {
-                            val stringResponse = response.body!!.string()
-                            runOnUiThread {
-                                cardImage = stringResponse
-                                val uri: Uri = Uri.parse("android.resource://nav.com.ru.egksev/drawable/" + (cardImage?.split(".")
-                                    ?.get(0) ?: "card000"))
-                                cardImg.setImageURI(null)
-                                cardImg.setImageURI(uri)
-                                val cardsString = getSavedCards()
-                                val cardsArray = cardsString?.split("--divider--")?.toTypedArray()
-                                val array2 = arrayListOf<String>()
-                                val array3 = arrayListOf<String>()
-                                cardsArray?.filterTo(array2) { it != "$cardImageInArray;$cardNum;$cardName" }
-                                array2.filterTo(array3) { it != "$cardNum;$cardName" }
-                                array3 += "$cardImage;$cardNum;$cardName"
-                                saveCards(array3.joinToString(separator = "--divider--"))
-                            }
-                        } else {
-                            runOnUiThread {
-                                cardImage = "card000"
-                                val uri: Uri = Uri.parse("android.resource://nav.com.ru.egksev/drawable/" + (cardImage?.split(".")
-                                    ?.get(0) ?: "card000"))
-                                cardImg.setImageURI(null)
-                                cardImg.setImageURI(uri)
-                            }
-                        }
-                    }
-                }
-            )
-        } else {
-            val uri: Uri = Uri.parse("android.resource://nav.com.ru.egksev/drawable/" + (cardImage?.split(".")
-                ?.get(0) ?: "card000"))
-            cardImg.setImageURI(null)
-            cardImg.setImageURI(uri)
-        }
+        val urlImage = "https://nav-com.ru/egks/v3.php?query=getCard&number=$cardNum"
+        Picasso.get()
+            .load(urlImage)
+            .placeholder(R.drawable.card_loading)
+            .error(R.drawable.card000)
+            .into(cardImg)
 
 
         backBtn.setOnClickListener {

@@ -104,7 +104,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/card001" />
+                        app:srcCompat="@drawable/card000" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

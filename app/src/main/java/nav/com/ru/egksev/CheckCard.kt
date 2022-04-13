@@ -31,7 +31,7 @@ class CheckCard : AppCompatActivity() {
         val back = findViewById<ImageButton>(R.id.backToMenuCheck)
         val balanceTW = findViewById<TextView>(R.id.balanceTextCheck)
         val expiresTW = findViewById<TextView>(R.id.expiresDateCheck)
-        var url = "https://nav-com.ru/egks/v2.php?query=getInfo&number="
+        var url = "https://nav-com.ru/egks/v3.php?query=getInfo&number="
 
         back.setOnClickListener {
             finish()
