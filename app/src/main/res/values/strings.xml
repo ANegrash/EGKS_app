@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Единая карта Севастополя</string>
+    <string name="version">версия 1.2.2 от 13.04.2022</string>
 </resources>
